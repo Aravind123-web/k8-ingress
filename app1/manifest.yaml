@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: aravind19981999/app1
+          image: aravind19981999/app1:v1.0
 ---
 # service for app1
 apiVersion: v1
