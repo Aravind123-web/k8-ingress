@@ -1,0 +1,61 @@
+# deployment for app1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  # These labels are deployment related labels
+  labels:
+    app: app1
+    purpose: ingress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1
+      purpose: ingress
+  # pod defination
+  template:
+    metadata:
+      # These labels are pod related labels
+      labels:
+        app: app1
+        purpose: ingress
+    spec:
+      containers:
+        - name: nginx
+          image: aravind19981999/app1
+---
+# service for app1
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1
+spec:
+  selector:
+    app: app1
+    purpose: ingress
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80 # target port
+---
+# # ingress for app1
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ingress-wildcard-host
+# spec:
+#   rules:
+#   - host: "app1.ar"   # ALB rule
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: "/"
+#         backend:
+#           service:
+#             name: app1 #ALB target group
+#             port:
+#               number: 80
+ 
+
+
