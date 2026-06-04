@@ -44,9 +44,15 @@ spec:
 # kind: Ingress
 # metadata:
 #   name: ingress-wildcard-host
+#   annotations:
+#   # These annotations are used to cretae application load balancer.
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/tags: Environment=dev,Team=test 
+#     alb.ingress.kubernetes.io/group.name: joindevops
 # spec:
 #   rules:
-#   - host: "app1.ar"   # ALB rule
+#   - host: "app1.aravind123-web.online"   # ALB rule
 #     http:
 #       paths:
 #       - pathType: Prefix
