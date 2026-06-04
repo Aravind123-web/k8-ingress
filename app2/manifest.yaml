@@ -1,0 +1,70 @@
+# deployment for app2
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2
+  # These labels are deployment related labels
+  labels:
+    app: app2
+    purpose: ingress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app2
+      purpose: ingress
+  # pod defination
+  template:
+    metadata:
+      # These labels are pod related labels
+      labels:
+        app: app2
+        purpose: ingress
+    spec:
+      containers:
+        - name: nginx
+          image: aravind19981999/app2:v1.0
+---
+# service for app2
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2
+spec:
+  selector:
+    app: app2
+    purpose: ingress
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80 # target port
+---
+# ingress for app2
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app2-ingress
+  annotations:
+  # These annotations are used to cretae application load balancer.
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/tags: Environment=dev,Team=test
+    # this annotation is useful to keep only ALB under joindevops group. If you don't give this it will create another ALB.
+    alb.ingress.kubernetes.io/group.name: joindevops
+spec:
+   ingressClassName: alb
+   rules:
+   - host: "app2.aravind123-web.online"   # ALB rule
+     http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: app2 #ALB target group
+            port:
+              number: 80
+ 
+
+
