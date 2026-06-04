@@ -39,29 +39,31 @@ spec:
       port: 80 # service port
       targetPort: 80 # target port
 ---
-# # ingress for app1
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: ingress-wildcard-host
-#   annotations:
-#   # These annotations are used to cretae application load balancer.
-#     alb.ingress.kubernetes.io/scheme: internet-facing
-#     alb.ingress.kubernetes.io/target-type: ip
-#     alb.ingress.kubernetes.io/tags: Environment=dev,Team=test 
-#     alb.ingress.kubernetes.io/group.name: joindevops
-# spec:
-#   rules:
-#   - host: "app1.aravind123-web.online"   # ALB rule
-#     http:
-#       paths:
-#       - pathType: Prefix
-#         path: "/"
-#         backend:
-#           service:
-#             name: app1 #ALB target group
-#             port:
-#               number: 80
+# ingress for app1
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app1-ingress
+  annotations:
+  # These annotations are used to cretae application load balancer.
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/tags: Environment=dev,Team=test 
+    alb.ingress.kubernetes.io/group.name: joindevops
+spec:
+   #ingressClassName: alb
+   rules:
+   - host: "app1.aravind123-web.online"   # ALB rule
+     http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: app1 #ALB target group
+            port:
+              number: 80
  
 
 
